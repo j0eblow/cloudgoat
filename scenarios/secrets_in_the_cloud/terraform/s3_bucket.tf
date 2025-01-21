@@ -9,9 +9,7 @@ locals {
   # "Bucket names can consist only of lowercase letters, numbers, dots (.), and hyphens (-)."
   # (per https://docs.aws.amazon.com/AmazonS3/latest/userguide/bucketnamingrules.html) 
   bucket_suffix = replace(var.cgid, "/[^a-z0-9-.]/", "-")
-}
-
-locals {
+  
   web_app_url = "http://${aws_instance.web_app.public_ip}:8080"
 }
 

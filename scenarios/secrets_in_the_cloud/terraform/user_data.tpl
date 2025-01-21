@@ -138,8 +138,20 @@ service docker start
 usermod -a -G docker ec2-user
 
 # Install and configure Vault
-docker pull vault
-docker run --cap-add=IPC_LOCK -d --name=vault -p 8200:8200 -e 'VAULT_DEV_ROOT_TOKEN_ID=TorysTotallyTubular456' -e 'VAULT_DEV_LISTEN_ADDRESS=0.0.0.0:8200' vault
+docker pull hashicorp/vault:latest
+docker run --cap-add=IPC_LOCK -d --name=vault -p 8200:8200 \
+  -e 'VAULT_DEV_ROOT_TOKEN_ID=TorysTotallyTubular456' \
+  -e 'VAULT_DEV_LISTEN_ADDRESS=0.0.0.0:8200' \
+  hashicorp/vault:latest
+
+# Wait for Vault container to start
+sleep 10
+
+# Verify Vault is running
+if ! curl -s http://127.0.0.1:8200/v1/sys/health; then
+  echo "Vault did not start successfully" >&2
+  exit 1
+fi
 
 # Install the Vault CLI
 sudo yum install -y yum-utils
@@ -155,11 +167,8 @@ export SSH_PRIVATE_KEY="${private_key}"
 vault kv put secret/id_rsa value="$SSH_PRIVATE_KEY"
 
 # Update .bash_profile with hint
-cat >> /home/ec2-user/.bash_profile <<-'EOF'
-+--------------------------------------------------------------------+
-|                                                                    |
-| Hey Devs, it's Jeff. Please ensure only IMDSv2 is enabled on the   |
-| EC2 instances! Thanks, haha! :)                                    |
-|                                                                    |
-+--------------------------------------------------------------------+
+cat >> /home/ec2-user/.bash_profile <<'EOF'
+# Hey Devs, it's Jeff.
+# Please ensure only IMDSv2 is enabled on the EC2 instances!
+# Thanks, haha! :)
 EOF

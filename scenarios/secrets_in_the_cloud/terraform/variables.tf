@@ -10,19 +10,24 @@
 
 #Required: AWS Profile
 variable "profile" {
-
+  description = "The AWS profile to use."
+  type        = string
 }
 #Required: AWS Region
 variable "region" {
+  description = "The AWS region to deploy resources to."
   default = "us-west-2"
+  type        = string
 }
 #Required: CGID Variable for unique naming
 variable "cgid" {
-
+  description = "CGID variable for unique naming."
+  type        = string
 }
 #Required: User's Public IP Address(es)
 variable "cg_whitelist" {
-  
+  description = "User's public IP address(es)."
+  type        = list(string)
 }
 #SSH Public Key
 variable "ssh-public-key-for-ec2" {
@@ -34,9 +39,13 @@ variable "ssh-private-key-for-ec2" {
 }
 #Stack Name
 variable "stack-name" {
-  default = "CloudGoat"
+  description = "Name of the stack."
+  default     = "CloudGoat"
+  type        = string
 }
 #Scenario Name
 variable "scenario-name" {
+  description = "Name of the scenario."
   default = "secrets_in_the_cloud"
+  type        = string
 }

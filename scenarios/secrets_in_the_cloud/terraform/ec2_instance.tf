@@ -36,7 +36,6 @@ data "aws_ami" "amazon_linux_2" {
   owners = ["amazon"]
 }
 
-provider "tls" {}
 resource "tls_private_key" "id_rsa" {
   algorithm = "RSA"
   rsa_bits  = 2048
